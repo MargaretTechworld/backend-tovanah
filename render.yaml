@@ -11,8 +11,10 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGO_URI
-        fromConfig: true
+        sync: false
       - key: JWT_SECRET
-        fromConfig: true
+        sync: false
       - key: STRIPE_SECRET_KEY
-        fromConfig: true
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
