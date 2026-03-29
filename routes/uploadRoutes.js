@@ -18,25 +18,26 @@ const storage = multer.diskStorage({
 });
 
 function checkFileType(file, cb) {
-    const filetypes = /jpg|jpeg|png/;
+    const filetypes = /jpg|jpeg|png|pdf|doc|docx/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = filetypes.test(file.mimetype);
+    const mimetype = filetypes.test(file.mimetype) || file.mimetype.includes('pdf') || file.mimetype.includes('document') || file.mimetype.includes('msword');
 
     if (extname && mimetype) {
         return cb(null, true);
     } else {
-        cb('Images only!');
+        cb('Images and Documents only!');
     }
 }
 
 const upload = multer({
     storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
     fileFilter: function (req, file, cb) {
         checkFileType(file, cb);
     },
 });
 
-router.post('/', protect, admin, upload.single('image'), (req, res) => {
+router.post('/', protect, upload.single('image'), (req, res) => {
     res.send(`/${req.file.path.replace(/\\/g, '/')}`);
 });
 

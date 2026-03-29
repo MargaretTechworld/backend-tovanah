@@ -1,5 +1,10 @@
 const Stripe = require('stripe');
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== 'your_stripe_secret_key_here' 
+    ? Stripe(process.env.STRIPE_SECRET_KEY) 
+    : { 
+        paymentIntents: { create: () => { throw new Error('Stripe API Key not configured'); } },
+        webhooks: { constructEvent: () => { throw new Error('Stripe Webhook Secret not configured'); } } 
+    };
 const Order = require('../models/orderModel');
 const Course = require('../models/courseModel');
 const sendEmail = require('../utils/sendEmail');
@@ -51,8 +56,12 @@ const handleWebhook = async (req, res) => {
     let event;
 
     try {
+        if (!process.env.STRIPE_WEBHOOK_SECRET) {
+            throw new Error('STRIPE_WEBHOOK_SECRET is not defined in environment variables');
+        }
         event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
     } catch (err) {
+        console.error(`Webhook Error: ${err.message}`);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 

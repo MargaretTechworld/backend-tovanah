@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: backend-tovanah
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        fromConfig: true
+      - key: JWT_SECRET
+        fromConfig: true
+      - key: STRIPE_SECRET_KEY
+        fromConfig: true

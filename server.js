@@ -34,6 +34,7 @@ const contentRoutes = require('./routes/contentRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const applicationRoutes = require('./routes/applicationRoutes');
 
 // ...
 
@@ -43,6 +44,7 @@ app.use('/api/content', contentRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/applications', applicationRoutes);
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
@@ -51,3 +53,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
+

@@ -112,6 +112,7 @@ const updateCourse = async (req, res) => {
             outcomes,
             requirements,
             modules,
+            image,
             videoUrl,
         } = req.body;
 
@@ -130,6 +131,7 @@ const updateCourse = async (req, res) => {
             course.outcomes = outcomes || course.outcomes;
             course.requirements = requirements || course.requirements;
             course.modules = modules || course.modules;
+            course.image = image || course.image;
             course.videoUrl = videoUrl || course.videoUrl;
 
             const updatedCourse = await course.save();
