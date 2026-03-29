@@ -13,7 +13,10 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: '*', // Allow all for initial debugging, change to specific origin later
+    credentials: true
+}));
 // Webhook needs raw body, exclude from standard json parsing
 app.use((req, res, next) => {
     if (req.originalUrl === '/api/payment/webhook') {

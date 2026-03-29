@@ -7,7 +7,8 @@ const connectDB = async () => {
         console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
         console.error(`Error: ${error.message}`);
-        process.exit(1);
+        // Log the error but don't exit; this helps the app stay up so Render can report it.
+        // process.exit(1); 
     }
 };
 
