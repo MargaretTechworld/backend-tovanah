@@ -80,6 +80,13 @@ router.post('/', protect, (req, res) => {
         }
 
         console.log(`[FileUploaded] ${req.file.path}`);
+        
+        // If it's Cloudinary, the path is already a full URL
+        if (req.file.path.startsWith('http')) {
+            return res.send(req.file.path);
+        }
+
+        // For local storage, format as /uploads/filename
         res.send(`/${req.file.path.replace(/\\/g, '/')}`);
     });
 });
