@@ -24,6 +24,7 @@ if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY) {
         cloudinary: cloudinary,
         params: {
             folder: 'tovanah_uploads',
+            resource_type: 'auto', // Support PDF, DOC, and images
             allowed_formats: ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'],
         },
     });
