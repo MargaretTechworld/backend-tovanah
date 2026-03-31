@@ -26,7 +26,10 @@ const getMyApplications = async (req, res) => {
     const applications = await Application.find({ user: req.user._id })
       .populate('course', 'title price image')
       .sort({ createdAt: -1 });
-    res.json(applications);
+
+    // Filter out applications for courses that have been deleted
+    const validApplications = applications.filter(app => app.course !== null);
+    res.json(validApplications);
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -41,7 +44,10 @@ const getApplications = async (req, res) => {
       .populate('user', 'name email')
       .populate('course', 'title price')
       .sort({ createdAt: -1 });
-    res.json(applications);
+
+    // Filter out applications for courses that have been deleted
+    const validApplications = applications.filter(app => app.course !== null);
+    res.json(validApplications);
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
