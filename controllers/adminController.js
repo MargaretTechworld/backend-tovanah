@@ -1,5 +1,7 @@
 const Order = require('../models/orderModel');
 const User = require('../models/userModel');
+const Course = require('../models/courseModel');
+const Application = require('../models/Application');
 const sendEmail = require('../utils/sendEmail');
 
 // @desc    Get all orders
@@ -81,9 +83,37 @@ const addOrderItems = async (req, res) => {
     }
 };
 
+// @desc    Get admin dashboard stats
+// @route   GET /api/orders/stats
+// @access  Private/Admin
+const getAdminStats = async (req, res) => {
+    try {
+        const totalCourses = await Course.countDocuments({});
+        const totalStudents = await User.countDocuments({ isAdmin: false });
+        const pendingApplications = await Application.countDocuments({ status: 'Pending' });
+
+        const sales = await Order.aggregate([
+            { $match: { isPaid: true } },
+            { $group: { _id: null, total: { $sum: '$totalPrice' } } }
+        ]);
+
+        const totalSales = sales.length > 0 ? sales[0].total : 0;
+
+        res.json({
+            totalCourses,
+            totalStudents,
+            pendingApplications,
+            totalSales
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch admin statistics', error: error.message });
+    }
+};
+
 module.exports = {
     getOrders,
     getOrderById,
     contactStudent,
-    addOrderItems
+    addOrderItems,
+    getAdminStats
 };
