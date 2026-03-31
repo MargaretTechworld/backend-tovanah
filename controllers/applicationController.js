@@ -126,11 +126,26 @@ const deleteApplication = async (req, res) => {
   }
 };
 
+// @desc    Get the latest application for the logged in user (for pre-filling)
+// @route   GET /api/applications/mine/latest
+// @access  Private
+const getLatestApplication = async (req, res) => {
+  try {
+    const application = await Application.findOne({ user: req.user._id })
+      .sort({ createdAt: -1 });
+
+    res.json(application || {});
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   submitApplication,
   getMyApplications,
   getApplications,
   getApplicationById,
   updateApplicationStatus,
-  deleteApplication
+  deleteApplication,
+  getLatestApplication,
 };

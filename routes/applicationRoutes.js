@@ -15,6 +15,7 @@ router.route('/')
   .get(protect, admin, getApplications);
 
 router.route('/mine').get(protect, getMyApplications);
+router.route('/mine/latest').get(protect, getLatestApplication);
 
 router.route('/:id')
   .get(protect, admin, getApplicationById)
