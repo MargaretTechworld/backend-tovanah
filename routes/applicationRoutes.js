@@ -6,6 +6,7 @@ const {
   getApplications,
   getApplicationById,
   updateApplicationStatus,
+  deleteApplication,
 } = require('../controllers/applicationController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
@@ -17,6 +18,7 @@ router.route('/mine').get(protect, getMyApplications);
 
 router.route('/:id')
   .get(protect, admin, getApplicationById)
-  .put(protect, admin, updateApplicationStatus);
+  .put(protect, admin, updateApplicationStatus)
+  .delete(protect, deleteApplication);
 
 module.exports = router;
