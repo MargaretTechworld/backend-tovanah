@@ -88,9 +88,11 @@ const addOrderItems = async (req, res) => {
 // @access  Private/Admin
 const getAdminStats = async (req, res) => {
     try {
-        const totalCourses = await Course.countDocuments({});
+        const totalCourses = await Course.countDocuments();
         const totalStudents = await User.countDocuments({ isAdmin: false });
         const pendingApplications = await Application.countDocuments({ status: 'Pending' });
+
+        console.log(`Stats DEBUG: Courses=${totalCourses}, Students=${totalStudents}, Pending=${pendingApplications}`);
 
         const sales = await Order.aggregate([
             { $match: { isPaid: true } },
