@@ -101,11 +101,25 @@ const getAdminStats = async (req, res) => {
 
         const totalSales = sales.length > 0 ? sales[0].total : 0;
 
+        // Fetch recent activity
+        const recentApplications = await Application.find({})
+            .populate('user', 'name')
+            .populate('course', 'title')
+            .sort({ createdAt: -1 })
+            .limit(5);
+
+        const recentOrders = await Order.find({})
+            .populate('user', 'name')
+            .sort({ createdAt: -1 })
+            .limit(5);
+
         res.json({
             totalCourses,
             totalStudents,
             pendingApplications,
-            totalSales
+            totalSales,
+            recentApplications,
+            recentOrders
         });
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch admin statistics', error: error.message });

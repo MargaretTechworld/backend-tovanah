@@ -72,10 +72,31 @@ const handleWebhook = async (req, res) => {
         const course = await Course.findById(courseId);
 
         const message = `
-            <h1>Thank you for enrolling in ${course.title}</h1>
-            <p>We are excited to have you on board.</p>
-            ${course.mode === 'Online' ? `<p><strong>Zoom Link:</strong> <a href="${course.zoomLink}">${course.zoomLink}</a></p>` : `<p><strong>Location:</strong> ${course.location}</p>`}
-            <p>Please keep this information safe.</p>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+              <h2 style="color: #10b981;">Payment Successful!</h2>
+              <p style="color: #64748b;">Welcome to the Tovanah Consulting community.</p>
+            </div>
+            
+            <p>Dear Valued Student,</p>
+            <p>Your enrollment in <strong>${course.title}</strong> is now officially active. We are thrilled to have you join our professional development program.</p>
+            
+            <div style="margin: 20px 0; padding: 20px; background-color: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+              <h4 style="margin-top: 0; color: #0f172a;">Course Delivery Details</h4>
+              <p style="margin: 8px 0;"><strong>Mode:</strong> ${course.mode || 'Online'}</p>
+              ${course.mode === 'Online' 
+                ? `<p style="margin: 8px 0;"><strong>Zoom/Live Link:</strong> <a href="${course.zoomLink || '#'}" style="color: #3b82f6;">Join Classroom</a></p>` 
+                : `<p style="margin: 8px 0;"><strong>Location:</strong> ${course.location || 'Consultancy Office'}</p>`}
+              <p style="margin: 8px 0;"><strong>Schedule:</strong> See course schedule in portal</p>
+            </div>
+
+            <p>You can now access all learning materials, track your progress, and download your receipt in the <a href="https://tovaah-frontend.onrender.com/portal" style="color: #3b82f6; font-weight: bold;">Student Portal</a>.</p>
+            
+            <p style="margin-top: 30px;">Best Regards,<br/><strong>Tovanah Consulting Team</strong></p>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #f1f5f9; font-size: 0.8rem; color: #94a3b8; text-align: center;">
+              This is an automated confirmation of your professional enrollment.
+            </div>
+          </div>
         `;
 
         try {
