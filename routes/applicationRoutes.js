@@ -7,6 +7,7 @@ const {
   getApplicationById,
   updateApplicationStatus,
   deleteApplication,
+  getLatestApplication,
 } = require('../controllers/applicationController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
